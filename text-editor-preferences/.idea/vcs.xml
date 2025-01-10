@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/Minimal_TypeScript_v6.1.0" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/api-docs" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/community-repositories/workspace-github-workflows" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/community-repositories/workspace-integration" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/community-repositories/workspace-workers" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/github-workflows" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/infrastructure" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/local-dev" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/platform-api" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/platform-frontend" vcs="Git" />
+  </component>
+</project>
