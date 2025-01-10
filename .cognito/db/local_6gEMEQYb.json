@@ -1,0 +1,102 @@
+{
+  "Users": {
+    "admin@sigtunnel.com": {
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "c59a0ef6-6df1-43ec-83b3-ddfc267e746a"
+        },
+        {
+          "Name": "email",
+          "Value": "admin@sigtunnel.com"
+        },
+        {
+          "Name": "email_verified",
+          "Value": "true"
+        }
+      ],
+      "Enabled": true,
+      "Password": "password",
+      "RefreshTokens": [
+        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoiYWRtaW5Ac2lndHVubmVsLmNvbSIsImVtYWlsIjoiYWRtaW5Ac2lndHVubmVsLmNvbSIsImlhdCI6MTczMzIxNDE1NCwianRpIjoiY2U5ZmRjYjQtMWI0Zi00ZjY0LWE5MTUtNWYxZGIyYTE2ZDI3IiwiZXhwIjoxNzMzODE4OTU0LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkyMjkvbG9jYWxfNmdFTUVRWWIifQ.nGeuLtf0PZZSgW7yvS4H6IbJiHfjfr3jKH7P8FYj2pKuaAQwFdkboA_eoUdIgFw6P6xgqoQv9wprTK_c6PFm8hWOuop-dnN-8ip2vgsBsd5Btvp2j6cLS86vrW-FTDzJ_wJA20ifejg3eB5ZR9lqywHLLXNT4no_oBZqTXwJjXNl6Il0H6XCSNwaoZiCTrEaskqsfQP_vR-Vs-S-gAjDuDUBgAv-bZzROqXoiwxr8bAb5-zY5wQlT-PBlUjeUUm0sghQo58WFWNX19t74MGMPOBzgYDwFe6tvWp40Oz4MdLdkpwFehhWBnUEnA25NArSjQbjpLbw_YmYasV05xqsmg",
+        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoiYWRtaW5Ac2lndHVubmVsLmNvbSIsImVtYWlsIjoiYWRtaW5Ac2lndHVubmVsLmNvbSIsImlhdCI6MTczMzIxNDE2OCwianRpIjoiZDBiODdiNjctOTNiYS00N2EzLWFmMGQtMjI3NWY4MmM2MTk3IiwiZXhwIjoxNzMzODE4OTY4LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkyMjkvbG9jYWxfNmdFTUVRWWIifQ.oRRBxMc_M0wGXcYSn6gRIdsFuqMIHzljoFPEPQyQgaOhM1lrRxNBTVoa4DXwWHCKRhg5TH9Ut-Wn-ieVBkVc1p-kK49xuuE9I9aJm52QFVBIzd78hvPduC1rf-4k8mraG-qvK8cVEDGkgnjqZXDw5ZjcDSfffqQwMQpn_r98XJ6qJd45jBcuD3-MAxG8DESupwG_m3sP4Ewm1z1ruTmVWiMQJII30gWgcOr7sk26tj-F1cr2Hjmbmhj7o3xu-qtGiXGOW4r0zPDaVjzVxFRrg4HyY6TVPQ7SS1hMSKnTzVvy4qiGv-6ZmqQnuD3nDvNStwm-xYa37wCRWPJVNTte_Q",
+        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoiYWRtaW5Ac2lndHVubmVsLmNvbSIsImVtYWlsIjoiYWRtaW5Ac2lndHVubmVsLmNvbSIsImlhdCI6MTczMzU1NjM2NSwianRpIjoiNWU4ZGRjYzEtM2JhMC00YmRlLTllM2QtZWVjMDFmY2M5NzM5IiwiZXhwIjoxNzM0MTYxMTY1LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkyMjkvbG9jYWxfNmdFTUVRWWIifQ.Wu0qDYRD3923emC8YtOxJ36BB3tevIzdgIzIW3RatMFCXPysv0lZ2z8X1Jwv8CjV74JGbLtPjVZu__zDIFeuh4blw-Hog2AO3zBLG3-AZtDfmwRIIWd-gia5Wwu9NrUwdi4-bdJ1CJSVXvo20wH3qgz5NH3ExF0XjZL4BUGW9DIJzVPkrr7UWAz7XanZk3fOoDSN0-D0qxvK9ojn_DB43_gNboKdoNJoMAGcfXTG7za8UIcOPfX8KtiBba3rMJkwynz-6wPjE_ztrvvmMtl8n5zi6TKfOyYhHBCxMqbwAyrGx_AXIFTXcT-375Qq9MkpIVElSp19Ky6_gUMqn4C5Kg",
+        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoiYWRtaW5Ac2lndHVubmVsLmNvbSIsImVtYWlsIjoiYWRtaW5Ac2lndHVubmVsLmNvbSIsImlhdCI6MTczNDMyMjY0NSwianRpIjoiMzQwY2JmZjctZmYxZS00M2FiLTg0ZTItZjZlOWQ0OTcyMGYyIiwiZXhwIjoxNzM0OTI3NDQ1LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkyMjkvbG9jYWxfNmdFTUVRWWIifQ.kGPdV5lJMjnZn5cu7a5QXtEup40V2ResdZ-9VOS_YRQaswxxYVAPE9iYpGea9IT-s2_4OAcU8HaCnfSigoXyWeRnTa0-dCPBN8tEDAwg-SVB2cozJTurNPv9JKS1d1jSN4qB_J3Eyr0YdUS6SuoVoiDdtslQgVsDSs9BMFKfCHSLEi-Y_CPj-fOuX6U_fuPAA-cc-l7Uxn7Rg4s0WJnB__UvNzomgaJeXodkZe_uJa1DArEoZIKw3H3g_wDiISDJMnusVZ9s-Stn9VYKJtXi86iDRxXoT_xlM2wphd31qfSfq6r8tMHov5opm5jJ576Wx87ekyQt1gKqlmRjjFna3A",
+        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoiYWRtaW5Ac2lndHVubmVsLmNvbSIsImVtYWlsIjoiYWRtaW5Ac2lndHVubmVsLmNvbSIsImlhdCI6MTczNjUyNDY0NywianRpIjoiMjk2ZjM0MjctMDVlZC00YjUzLWFmNWMtMGQ4ZWM3ODQzY2JmIiwiZXhwIjoxNzM3MTI5NDQ3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkyMjkvbG9jYWxfNmdFTUVRWWIifQ.qPqgZn-ZxLrsC8N0wxVOo0W2H2yWheHuAEGwFK-8Q5ZBgY6RsMowq-RIcra-FXIB67XoYHY0NVgac-PdBA37vHMJ3K-x53rMbiIgaWkUmG18WefpYAlgjbB0ZrYjesqD0uSRiLMR-swm7jlvZvrTEupy9zqE0ye8xNnnEBeLacO-GrxI9aLNrKqxTTShiJodl1nqiCm-N75uCC3KC9NfxSjrrjTRQyuT6OVj-Ej3e8AkFzPTjVRe-DaTe_n842MLG19Q_QHyBwq7he3HLfBcG9tt8Dz513tnnoK9tqFsUehcg6XhJX0bCwyVoh6LiH87AAZpbDQPCS1m1603quY7UQ",
+        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoiYWRtaW5Ac2lndHVubmVsLmNvbSIsImVtYWlsIjoiYWRtaW5Ac2lndHVubmVsLmNvbSIsImlhdCI6MTczNjUyNDY2NywianRpIjoiY2ZkZjUzZmItYTdhNS00MGQyLTlhZGQtM2U1MmVjMmI2NWQyIiwiZXhwIjoxNzM3MTI5NDY3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkyMjkvbG9jYWxfNmdFTUVRWWIifQ.gHk1iJAZVap3tKSaiCJE5xaspnUf9NEvBbc17Vh3Wlo2m9ifJa7FjCJfmC2D58edaE9mXM2IXydDs6bFMzSOjiI57TB91BDrzikqZWZ34wvjOYlm6zxLzitlAYsOgcvUErYrsZntDULXoDIO8cNwV8yxpAvb_c4pgw2Xsfa2kD7tbsvOr78hBDO_PUqp48Rn706iGKQEo4qdpX8so5ua72yk9dHHgR4MgXm5T7uL9vGh58v9F_Q9slcw9E4C2tZPPvLdguBWoykb-t9mDO5ixqHzhtYrwlGOJ7MQg5KGHkz2UawRCAyfq96OeHDLm1Zl0jBl92iASSBdi70MCV7yuA"
+      ],
+      "UserCreateDate": "2024-04-17T05:15:33.211Z",
+      "UserLastModifiedDate": "2024-04-17T05:16:04.717Z",
+      "Username": "admin@sigtunnel.com",
+      "UserStatus": "CONFIRMED",
+      "AttributeVerificationCode": "745682"
+    }
+  },
+  "Options": {
+    "Policies": {
+      "PasswordPolicy": {
+        "MinimumLength": 8,
+        "RequireUppercase": true,
+        "RequireLowercase": true,
+        "RequireNumbers": true,
+        "RequireSymbols": true,
+        "TemporaryPasswordValidityDays": 7
+      }
+    },
+    "LambdaConfig": {},
+    "SchemaAttributes": [
+      {
+        "Name": "sub",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": false,
+        "Required": true,
+        "StringAttributeConstraints": {
+          "MinLength": "1",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "email",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": false,
+        "Required": true,
+        "StringAttributeConstraints": {
+          "MinLength": "1",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "email_verified",
+        "AttributeDataType": "Boolean",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false
+      }
+    ],
+    "VerificationMessageTemplate": {
+      "DefaultEmailOption": "CONFIRM_WITH_CODE"
+    },
+    "MfaConfiguration": "OFF",
+    "EstimatedNumberOfUsers": 0,
+    "EmailConfiguration": {
+      "EmailSendingAccount": "COGNITO_DEFAULT"
+    },
+    "AdminCreateUserConfig": {
+      "AllowAdminCreateUserOnly": false,
+      "UnusedAccountValidityDays": 7
+    },
+    "UsernameAttributes": [
+      "email"
+    ],
+    "AutoVerifiedAttributes": [
+      "email"
+    ],
+    "Arn": "arn:aws:cognito-idp:local:local:userpool/local_6gEMEQYb",
+    "CreationDate": "2024-04-14T23:15:08.085Z",
+    "Id": "local_6gEMEQYb",
+    "LastModifiedDate": "2024-04-14T23:15:08.085Z",
+    "Name": "SandboxUserPool"
+  }
+}
