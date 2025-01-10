@@ -24,6 +24,7 @@ local development.
 * Run `vagrant up --provision`.
 
 * For **Windows users only**:
+  * Turn off the VM: `vagrant halt`
   * Enable Symbolic Links for the Virtual Machine:
       * Open a terminal as `Administrator`.
       * `cd 'C:\Program Files\Oracle\VirtualBox\'`
