@@ -1,4 +1,4 @@
-# Local Dev
+# Local Development
 
 This is the setup repository for the [Sigtunnel](https://github.com/sigtunnel) organization. It contains a `Vagrantfile` with the VM setup for 
 local development.
