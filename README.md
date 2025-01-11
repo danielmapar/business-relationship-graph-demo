@@ -33,8 +33,8 @@ local development.
           * `signtunnel` is the default name.
           * If you don't remember this, in Virtual Box go to `Machine > Settings > General > Basic > Name`.
         * Replace `SHARE_NAME` with the name of the shared folder.
-            * `home_vagrant_sigtunnel` is the default name.
-            * If you don't remember this, in Virtual Box go to `Machine > Settings > Shared Folders`.
+          * `home_vagrant_sigtunnel` is the default name.
+          * If you don't remember this, in Virtual Box go to `Machine > Settings > Shared Folders`.
 
 ### Getting Started with VMware Workstation Pro / VMware Fusion
 

@@ -35,6 +35,9 @@ Vagrant.configure("2") do |config|
       #   # Display the VirtualBox GUI when booting the machine
       #   vb.gui = true
 
+      # Enable Symbolic Links for the Virtual Machine
+      vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
+
       # Customize the amount of memory on the VM:
       vb.memory = "16384" # 16GB
       vb.cpus = 4
