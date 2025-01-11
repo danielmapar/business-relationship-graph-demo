@@ -18,7 +18,7 @@ local development.
     cd vagrant-vbguest
     gem build vagrant-vbguest.gemspec
     # vagrant-vbguest plugin workaround for https://github.com/dotless-de/vagrant-vbguest/issues/332
-    VAGRANT_DISABLE_STRICT_DEPENDENCY_ENFORCEMENT=1 vagrant plugin install vagrant-vbguest-0.32.1.gem
+    vagrant plugin install vagrant-vbguest-0.32.1.gem
     ```
 
 * Run `vagrant up --provision`.

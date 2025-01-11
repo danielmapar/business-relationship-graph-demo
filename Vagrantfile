@@ -1,3 +1,4 @@
+ENV['VAGRANT_DISABLE_STRICT_DEPENDENCY_ENFORCEMENT'] = '1'
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
