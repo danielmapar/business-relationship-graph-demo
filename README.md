@@ -38,6 +38,9 @@ local development.
 
 ### Getting Started with VMware Workstation Pro / VMware Fusion
 
+* **[DISCLAIMER] This is unstable, with notorious issues with symlinks, git, and other tools.**
+  * https://knowledge.broadcom.com/external/article?legacyId=1007277
+
 * For **Windows users only**:
     * Disable Hyper-V by running `bcdedit /set hypervisorlaunchtype off` as administrator.
     * Reboot your machine.
