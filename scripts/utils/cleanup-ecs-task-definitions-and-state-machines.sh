@@ -34,4 +34,18 @@ if [ ${#inactive_tasks[@]} -gt 0 ]; then
     done
 fi
 
+# List and delete all Step Functions state machines
+echo "Cleaning up Step Functions state machines..."
+state_machines=$(aws stepfunctions list-state-machines --query 'stateMachines[*].stateMachineArn' --output text)
+
+if [ -n "$state_machines" ]; then
+    for machine in $state_machines; do
+        echo "Deleting state machine: $machine"
+        aws stepfunctions delete-state-machine --state-machine-arn $machine
+    done
+    echo "Step Functions cleanup complete!"
+else
+    echo "No Step Functions state machines found."
+fi
+
 echo "Cleanup complete in us-east-2 region!"
