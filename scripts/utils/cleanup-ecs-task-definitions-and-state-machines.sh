@@ -48,4 +48,34 @@ else
     echo "No Step Functions state machines found."
 fi
 
+# List and delete all EventBridge schedules and schedule groups
+echo "Cleaning up EventBridge schedules and schedule groups..."
+
+# First, delete all schedules in each schedule group
+schedule_groups=$(aws scheduler list-schedule-groups --query 'ScheduleGroups[*].Name' --output text)
+
+if [ -n "$schedule_groups" ]; then
+    for group in $schedule_groups; do
+        echo "Processing schedule group: $group"
+        
+        # List and delete all schedules in this group
+        schedules=$(aws scheduler list-schedules --schedule-group $group --query 'Schedules[*].Name' --output text)
+        if [ -n "$schedules" ]; then
+            for schedule in $schedules; do
+                echo "Deleting schedule: $schedule in group: $group"
+                aws scheduler delete-schedule --name $schedule --schedule-group $group
+            done
+        fi
+    done
+fi
+
+# Delete default group schedules
+default_schedules=$(aws scheduler list-schedules --query 'Schedules[*].Name' --output text)
+if [ -n "$default_schedules" ]; then
+    for schedule in $default_schedules; do
+        echo "Deleting schedule: $schedule in default group"
+        aws scheduler delete-schedule --name $schedule
+    done
+fi
+
 echo "Cleanup complete in us-east-2 region!"
