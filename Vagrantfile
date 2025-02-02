@@ -1,4 +1,4 @@
-ENV['VAGRANT_DISABLE_STRICT_DEPENDENCY_ENFORCEMENT'] = '1'
+# ENV['VAGRANT_DISABLE_STRICT_DEPENDENCY_ENFORCEMENT'] = '1'
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
       #   vb.gui = true
 
       # Enable Symbolic Links for the Virtual Machine
-      vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
+      # vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
 
       # Customize the amount of memory on the VM:
       vb.memory = "16384" # 16GB
@@ -45,14 +45,14 @@ Vagrant.configure("2") do |config|
 
     # The official vagrant-vbguest plugin was archived, it fails to run on ruby 3.2+.
     # The gem referenced here was compiled from https://github.com/dheerapat/vagrant-vbguest
-    config.vagrant.plugins = {
-      'vagrant-vbguest' => {
-        'sources' =>[
-          'vagrant-vbguest-0.32.1.gem',
-          'https://rubygems.org/', # needed but not used
-        ],
-      }
-    }
+    # config.vagrant.plugins = {
+    #   'vagrant-vbguest' => {
+    #     'sources' =>[
+    #       'vagrant-vbguest-0.32.1.gem',
+    #       'https://rubygems.org/', # needed but not used
+    #     ],
+    #   }
+    # }
   end
 
   # Disable automatic box update checking. If you disable this, then
