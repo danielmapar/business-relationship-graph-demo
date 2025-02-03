@@ -59,11 +59,11 @@ if [ -n "$schedule_groups" ]; then
         echo "Processing schedule group: $group"
         
         # List and delete all schedules in this group
-        schedules=$(aws scheduler list-schedules --schedule-group $group --query 'Schedules[*].Name' --output text)
+        schedules=$(aws scheduler list-schedules --group-name $group --query 'Schedules[*].Name' --output text)
         if [ -n "$schedules" ]; then
             for schedule in $schedules; do
                 echo "Deleting schedule: $schedule in group: $group"
-                aws scheduler delete-schedule --name $schedule --schedule-group $group
+                aws scheduler delete-schedule --name $schedule --group-name $group
             done
         fi
     done
@@ -75,6 +75,18 @@ if [ -n "$default_schedules" ]; then
     for schedule in $default_schedules; do
         echo "Deleting schedule: $schedule in default group"
         aws scheduler delete-schedule --name $schedule
+    done
+fi
+
+# Delete schedule groups (except default group)
+if [ -n "$schedule_groups" ]; then
+    for group in $schedule_groups; do
+        if [ "$group" != "default" ]; then
+            echo "Deleting schedule group: $group"
+            aws scheduler delete-schedule-group --name $group
+        else
+            echo "Skipping default group"
+        fi
     done
 fi
 
