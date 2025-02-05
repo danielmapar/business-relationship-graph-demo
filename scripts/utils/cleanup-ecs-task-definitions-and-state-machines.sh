@@ -78,16 +78,17 @@ if [ -n "$default_schedules" ]; then
     done
 fi
 
+### We don't want to delete to delete groups, because those are terraform managed ###
 # Delete schedule groups (except default group)
-if [ -n "$schedule_groups" ]; then
-    for group in $schedule_groups; do
-        if [ "$group" != "default" ]; then
-            echo "Deleting schedule group: $group"
-            aws scheduler delete-schedule-group --name $group
-        else
-            echo "Skipping default group"
-        fi
-    done
-fi
+# if [ -n "$schedule_groups" ]; then
+#     for group in $schedule_groups; do
+#         if [ "$group" != "default" ]; then
+#             echo "Deleting schedule group: $group"
+#             aws scheduler delete-schedule-group --name $group
+#         else
+#             echo "Skipping default group"
+#         fi
+#     done
+# fi
 
 echo "Cleanup complete in us-east-2 region!"
