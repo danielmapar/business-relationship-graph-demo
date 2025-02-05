@@ -35,7 +35,6 @@ if [ ${#inactive_tasks[@]} -gt 0 ]; then
 fi
 
 # List and delete all Step Functions state machines
-echo "Cleaning up Step Functions state machines..."
 state_machines=$(aws stepfunctions list-state-machines --query 'stateMachines[*].stateMachineArn' --output text)
 
 if [ -n "$state_machines" ]; then
@@ -49,8 +48,6 @@ else
 fi
 
 # List and delete all EventBridge schedules and schedule groups
-echo "Cleaning up EventBridge schedules and schedule groups..."
-
 # First, delete all schedules in each schedule group
 schedule_groups=$(aws scheduler list-schedule-groups --query 'ScheduleGroups[*].Name' --output text)
 
@@ -78,7 +75,7 @@ if [ -n "$default_schedules" ]; then
     done
 fi
 
-### We don't want to delete to delete groups, because those are terraform managed ###
+## We don't want to delete to delete groups, because those are terraform managed ###
 # Delete schedule groups (except default group)
 # if [ -n "$schedule_groups" ]; then
 #     for group in $schedule_groups; do
@@ -90,5 +87,15 @@ fi
 #         fi
 #     done
 # fi
+
+# Delete log groups that start with /sigtunnel/
+log_groups=$(aws logs describe-log-groups --query "logGroups[?starts_with(logGroupName, '/sigtunnel/')].logGroupName" --output text)
+
+if [ -n "$log_groups" ]; then
+    for log_group in $log_groups; do
+        echo "Deleting log group: $log_group"
+        aws logs delete-log-group --log-group-name "$log_group"
+    done
+fi
 
 echo "Cleanup complete in us-east-2 region!"
