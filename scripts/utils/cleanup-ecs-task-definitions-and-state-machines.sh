@@ -98,4 +98,16 @@ if [ -n "$log_groups" ]; then
     done
 fi
 
+# Clean up S3 buckets starting with sigtunnel-workspace-
+workspace_buckets=$(aws s3api list-buckets --query "Buckets[?starts_with(Name, 'sigtunnel-workspace-')].Name" --output text)
+
+if [ -n "$workspace_buckets" ]; then
+    for bucket in $workspace_buckets; do
+        echo "Emptying bucket: $bucket"
+        
+        # First remove all objects
+        aws s3 rm s3://$bucket --recursive
+    done
+fi
+
 echo "Cleanup complete in us-east-2 region!"
