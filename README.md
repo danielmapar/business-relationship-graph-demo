@@ -5,6 +5,10 @@ local development.
 
 ### Getting Started with VirtualBox
 
+* For **Windows users only**:
+    * Disable Hyper-V by running `bcdedit /set hypervisorlaunchtype off` as administrator.
+    * Reboot your machine.
+
 * Install [Virtual Box](https://www.virtualbox.org/wiki/Downloads) version `7.1`.
   * Version `7.1` requires a [workaround](https://github.com/hashicorp/vagrant/issues/13501).
 
