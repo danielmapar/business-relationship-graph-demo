@@ -66,7 +66,7 @@ local development.
 
 * Run `vagrant ssh` to get inside of it afterwards.
 
-### Run services locally
+### Running services locally
 
 * Navigate to `cd /home/vagrant/sigtunnel/local-dev`.
 * Run `docker-compose build --no-cache` to build the `Dockerfile` associated with each service.
