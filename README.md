@@ -13,7 +13,7 @@ local development.
   * Version `7.1` requires a [workaround](https://github.com/hashicorp/vagrant/issues/13501).
 
 * Install [Vagrant](https://developer.hashicorp.com/vagrant/downloads).
-
+<! --
 * Install [vagrant-vbguest](https://github.com/dheerapat/vagrant-vbguest) with `Administrative` privileges.
   * ```bash
     choco install ruby
@@ -24,6 +24,7 @@ local development.
     # vagrant-vbguest plugin workaround for https://github.com/dotless-de/vagrant-vbguest/issues/332
     vagrant plugin install vagrant-vbguest-0.32.1.gem
     ```
+-->
 
 * Run `vagrant up --provision`.
 
