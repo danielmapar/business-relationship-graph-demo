@@ -41,6 +41,9 @@ local development.
           * `home_vagrant_sigtunnel` is the default name.
           * If you don't remember this, in Virtual Box go to `Machine > Settings > Shared Folders`.
 -->
+
+* Run `vagrant ssh` to get inside of it afterwards.
+
 ### Getting Started with VMware Workstation Pro / VMware Fusion
 
 * **[DISCLAIMER] This is unstable, with notorious issues with symlinks, git, and other tools.**
@@ -61,7 +64,7 @@ local development.
 * Run `VAGRANT_DEFAULT_PROVIDER=vmware_desktop vagrant up --provision`.
     * This will build your development Virtual Machine.
 
-* Run `vagrant ssh` to get inside of it after wards.
+* Run `vagrant ssh` to get inside of it afterwards.
 
 ### Run services locally
 
