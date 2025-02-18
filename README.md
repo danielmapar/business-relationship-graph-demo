@@ -13,7 +13,7 @@ local development.
   * Version `7.1` requires a [workaround](https://github.com/hashicorp/vagrant/issues/13501).
 
 * Install [Vagrant](https://developer.hashicorp.com/vagrant/downloads).
-<! --
+<!---
 * Install [vagrant-vbguest](https://github.com/dheerapat/vagrant-vbguest) with `Administrative` privileges.
   * ```bash
     choco install ruby
@@ -27,7 +27,7 @@ local development.
 -->
 
 * Run `vagrant up --provision`.
-
+<!---
 * For **Windows users only**:
   * Turn off the VM: `vagrant halt`
   * Enable Symbolic Links for the Virtual Machine:
@@ -40,7 +40,7 @@ local development.
         * Replace `SHARE_NAME` with the name of the shared folder.
           * `home_vagrant_sigtunnel` is the default name.
           * If you don't remember this, in Virtual Box go to `Machine > Settings > Shared Folders`.
-
+-->
 ### Getting Started with VMware Workstation Pro / VMware Fusion
 
 * **[DISCLAIMER] This is unstable, with notorious issues with symlinks, git, and other tools.**
