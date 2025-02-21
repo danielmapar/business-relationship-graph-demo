@@ -32,6 +32,7 @@ community_repositories=(
   "workspace-github-workflows"
   "workspace-integration"
   "workspace-workers"
+  "workspace-worker-libraries"
 )
 
 mkdir -p /home/vagrant/sigtunnel
