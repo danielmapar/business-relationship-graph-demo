@@ -90,7 +90,7 @@ local development.
 * Turn provision VM resources: `vagrant up --provision`
 * Destroy a VM: `vagrant destroy`
 * Clean up all Docker images and containers: `docker system prune -a --volumes`
-  * Clean up all volumes: `docker volume rm $(docker volume ls -q)` or `docker volume prune`
+  * Clean up all volumes: `docker volume prune`
 
 ### Configuring Visual Code Remote
 
