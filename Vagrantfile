@@ -70,6 +70,9 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
 
+  # Use public network with auto-bridge instead of specifying a particular interface
+  config.vm.network "public_network", auto_correct: true
+
   # Platform RESTful API
   config.vm.network "forwarded_port",
       guest: 8080,
