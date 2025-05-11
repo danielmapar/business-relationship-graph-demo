@@ -1,7 +1,6 @@
 # Local Development
 
-This is the setup repository for the [Interview Intuit](https://github.com/interview-intuit) organization. It contains a `Vagrantfile` with the VM setup for 
-local development.
+This is the setup repository for the Intuit system design exercise. It contains a `Vagrantfile` with the VM setup for executing the platform-api service.
 
 ### Getting Started with VirtualBox
 
