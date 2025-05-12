@@ -153,7 +153,10 @@ class BusinessService:
                         SELECT * from cypher('{graph_name}', $$
                             MATCH (a:Business), (b:Business) 
                             WHERE id(a) = {source_business_id} AND id(b) = {target_business_id}
-                            CREATE (a)-[r:{relationship_type} {{transaction_volume: {transaction_volume}}}]->(b)
+                            CREATE (a)-[r:BusinessRelationship {{
+                                type: '{relationship_type}',
+                                transaction_volume: {transaction_volume}
+                            }}]->(b)
                             RETURN a, r, b
                         $$) as (source agtype, relationship agtype, target agtype);
                     """)
@@ -176,6 +179,27 @@ class BusinessService:
                 except Exception as ex:
                     logging.error(type(ex), ex)
                     return None
+    
+    async def _get_relationship(self, source_business_id: str, target_business_id: str, relationship_type: str) -> dict | None:
+        async with self._database_manager.get_connection() as conn:
+            graph_name = self._graph_name
+
+            async with conn.cursor() as cursor:
+                await cursor.execute(f"""
+                    SELECT * from cypher('{graph_name}', $$
+                        MATCH (a:Business)-[r:BusinessRelationship]->(b:Business)
+                        WHERE id(a) = {source_business_id} AND id(b) = {target_business_id}
+                        AND r.type = '{relationship_type}'
+                        RETURN r
+                    $$) as (relationship agtype);
+                """)
+
+                result = await cursor.fetchall()
+
+                if not result or len(result) == 0:
+                    return None
+
+                return json.loads(result[0][0].split('::edge')[0])
 
     @classmethod
     async def create_relationship(cls, business_id: str, input: CreateRelationshipInputDto) -> CreateRelationshipOutputDto | None:
@@ -188,6 +212,11 @@ class BusinessService:
         target_business = await service._get_by_id(input.business_id)
         if not target_business:
             return None
+        
+        # Check if the relationship already exists
+        relationship = await service._get_relationship(source_business_id['id'], target_business['id'], input.relationship_type)
+        if relationship:
+           return {"id":str(relationship["id"])}
         
         relationship_type = input.relationship_type
         transaction_volume = input.transaction_volume
