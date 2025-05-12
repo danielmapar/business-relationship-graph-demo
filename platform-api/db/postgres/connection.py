@@ -1,5 +1,6 @@
 import os
 import asyncio
+import logging
 from contextlib import asynccontextmanager
 from psycopg_pool import AsyncConnectionPool
 
@@ -47,9 +48,9 @@ class DatabaseConnectionManager:
                 if not result:
                     await cursor.execute("SELECT create_graph(%s);", [graph_name])
                     await conn.commit()
-                    print(f"Graph '{graph_name}' created")
+                    logging.info(f"Graph '{graph_name}' created")
             
-        print("Async database connection pool initialized")
+        logging.info("Async database connection pool initialized")
         
     @asynccontextmanager
     async def get_connection(self):
@@ -63,4 +64,8 @@ class DatabaseConnectionManager:
                 await cursor.execute("SET search_path = ag_catalog, \"$user\", public;")
             yield conn
         finally:
+            # TODO: We don't need to commit read requests
+            await conn.commit()
             await self._pool.putconn(conn)
+        
+
