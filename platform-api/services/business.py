@@ -3,7 +3,8 @@ import os
 import json
 import logging
 from ..db.postgres.connection import DatabaseConnectionManager
-from ..dtos.business import CreateBusinessInputDto, CreateBusinessOutputDto, GetBusinessOutputDto, CreateRelationshipInputDto, CreateRelationshipOutputDto
+from ..dtos.business import CreateBusinessInputDto, CreateBusinessOutputDto, GetBusinessOutputDto, CreateRelationshipInputDto, CreateRelationshipOutputDto, GetRelationshipsOutputDto, RelationshipDto, DeleteRelationshipOutputDto
+from typing import List
 
 class BusinessService:
     _instance = None
@@ -226,4 +227,110 @@ class BusinessService:
             return None
 
         return {"id":str(result["id"])}
+    
+    async def _get_relationships(self, business_id: str) -> List[RelationshipDto] | None:
+        async with self._database_manager.get_connection() as conn:
+            graph_name = self._graph_name
 
+            async with conn.cursor() as cursor:
+                await cursor.execute(f"""
+                    SELECT * from cypher('{graph_name}', $$
+                        MATCH (a:Business)-[r:BusinessRelationship]->(b:Business)
+                        WHERE id(a) = {business_id}
+                        RETURN r.type as relationship_type, 
+                            r.transaction_volume as volume,
+                            id(b) as related_business_id,
+                            b.name as related_business_name,
+                            b.category as related_business_category
+                    $$) as (relationship_type agtype, volume agtype, related_business_id agtype, related_business_name agtype, related_business_category agtype);
+                """)
+
+                result = await cursor.fetchall()
+
+                if not result or len(result) == 0:
+                    return None
+            
+                relationships = []
+                for row in result:
+                    relationships.append(RelationshipDto(
+                        id=str(row[2]),
+                        type=row[0].strip('"'),  # Remove the surrounding quotes
+                        transaction_volume=int(row[1]),
+                        name=row[3].strip('"'),  # Remove the surrounding quotes
+                        category=row[4].strip('"')  # Remove the surrounding quotes
+                    ))
+
+                return relationships
+
+    @classmethod
+    async def get_relationships(cls, business_id: str) -> GetRelationshipsOutputDto | None:
+        service = await cls()
+        business = await service._get_by_id(business_id)
+        if not business:
+            return None
+
+        relationships = await service._get_relationships(business['id'])
+        if not relationships:
+            return None
+
+        return {
+            "id": business['id'],
+            "name": business['name'],
+            "category": business['category'],
+            "relationships": relationships
+        }
+    
+    async def _delete_relationship(self, relationship_id: str) -> bool:
+        async with self._database_manager.get_connection() as conn:
+            graph_name = self._graph_name
+
+            async with conn.cursor() as cursor:
+                try:
+                    await cursor.execute(f"""
+                        SELECT * from cypher('{graph_name}', $$
+                            MATCH (a:Business)-[r:BusinessRelationship]->(b:Business)
+                            WHERE id(r) = {relationship_id}
+                            DELETE r
+                            RETURN count(*) as deleted_count
+                        $$) as (deleted_count agtype);
+                    """)
+                    result = await cursor.fetchone()
+                    deleted_count = int(result[0]) if int(result[0]) > 0 else 0
+                    return deleted_count > 0
+                except Exception as ex:
+                    logging.error(type(ex), ex)
+                    return False    
+    
+    async def _get_relationship_by_id(self, source_business_id: str, relationship_id: str) -> dict | None:
+        async with self._database_manager.get_connection() as conn:
+            graph_name = self._graph_name
+
+            async with conn.cursor() as cursor:
+                await cursor.execute(f"""
+                    SELECT * from cypher('{graph_name}', $$
+                        MATCH (a:Business)-[r:BusinessRelationship]->(b:Business)
+                        WHERE id(a) = {source_business_id} AND id(r) = {relationship_id}
+                        RETURN r, a, b
+                    $$) as (relationship agtype, source_business agtype, target_business agtype);
+                """)
+
+                result = await cursor.fetchall()
+
+                if not result or len(result) == 0:
+                    return None
+
+                return json.loads(result[0][0].split('::edge')[0])
+                
+    @classmethod
+    async def delete_relationship(cls, business_id: str, relationship_id: str) -> DeleteRelationshipOutputDto | None:
+        service = await cls()
+        business = await service._get_by_id(business_id)
+        if not business:
+            return None
+        
+        relationship = await service._get_relationship_by_id(business['id'], relationship_id)
+        if not relationship:
+            return None
+
+        result = await service._delete_relationship(relationship_id)
+        return {"done": result}

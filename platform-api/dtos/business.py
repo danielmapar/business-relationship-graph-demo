@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field, validator
+from typing import List
 
 class CreateBusinessInputDto(BaseModel):
     name: str
@@ -27,3 +28,19 @@ class CreateRelationshipInputDto(BaseModel):
 class CreateRelationshipOutputDto(BaseModel):
     id: str
 
+class RelationshipDto(BaseModel):
+    id: str
+    type: str
+    transaction_volume: int
+    name: str
+    category: str
+
+
+class GetRelationshipsOutputDto(BaseModel):
+    id: str
+    name: str
+    category: str
+    relationships: List[RelationshipDto]
+
+class DeleteRelationshipOutputDto(BaseModel):
+    done: bool
