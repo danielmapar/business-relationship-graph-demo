@@ -2,7 +2,7 @@
 from fastapi import APIRouter, Response, status
 import json
 from ..services.business import BusinessService
-from ..dtos.business import CreateBusinessInputDto, CreateBusinessOutputDto, GetBusinessOutputDto, DeleteRelationshipOutputDto, CreateRelationshipInputDto, CreateRelationshipOutputDto, GetRelationshipsOutputDto
+from ..dtos.business import CreateBusinessInputDto, CreateBusinessOutputDto, GetBusinessOutputDto, DeleteRelationshipOutputDto, CreateRelationshipInputDto, CreateRelationshipOutputDto, GetRelationshipsOutputDto, GetRelationshipOutputDto
 
 router = APIRouter(prefix="/businesses", tags=["businesses"])
 
@@ -51,14 +51,14 @@ async def get_relationships(business_id: str) -> GetRelationshipsOutputDto | dic
         )
     return GetRelationshipsOutputDto(**result)
 
-@router.delete("/{business_id}/relationships/{relationship_id}")
-async def delete_relationship(business_id: str, relationship_id: str) -> DeleteRelationshipOutputDto | dict:
-    result = await BusinessService.delete_relationship(business_id, relationship_id)
+@router.get("/{business_id}/relationships/{other_business_id}")
+async def get_relationship(business_id: str, other_business_id: str) -> GetRelationshipOutputDto | dict:
+    result = await BusinessService.get_relationship(business_id, other_business_id)
     if not result:
         return Response(
-            content=json.dumps({"error": "Could not delete relationship"}),
+            content=json.dumps({"error": "Could not get relationship"}),
             media_type="application/json",
             status_code=status.HTTP_400_BAD_REQUEST
         )
-    return DeleteRelationshipOutputDto(done=True)
+    return GetRelationshipOutputDto(**result)
 

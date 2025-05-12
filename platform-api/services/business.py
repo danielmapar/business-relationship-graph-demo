@@ -3,7 +3,7 @@ import os
 import json
 import logging
 from ..db.postgres.connection import DatabaseConnectionManager
-from ..dtos.business import CreateBusinessInputDto, CreateBusinessOutputDto, GetBusinessOutputDto, CreateRelationshipInputDto, CreateRelationshipOutputDto, GetRelationshipsOutputDto, RelationshipDto, DeleteRelationshipOutputDto
+from ..dtos.business import CreateBusinessInputDto, CreateBusinessOutputDto, GetBusinessOutputDto, CreateRelationshipInputDto, CreateRelationshipOutputDto, GetRelationshipsOutputDto, RelationshipDto, DeleteRelationshipOutputDto, GetRelationshipOutputDto
 from typing import List
 
 class BusinessService:
@@ -181,7 +181,7 @@ class BusinessService:
                     logging.error(type(ex), ex)
                     return None
     
-    async def _get_relationship(self, source_business_id: str, target_business_id: str, relationship_type: str) -> dict | None:
+    async def _get_relationship(self, source_business_id: str, target_business_id: str, relationship_type: str | None = None) -> dict | None:
         async with self._database_manager.get_connection() as conn:
             graph_name = self._graph_name
 
@@ -190,7 +190,7 @@ class BusinessService:
                     SELECT * from cypher('{graph_name}', $$
                         MATCH (a:Business)-[r:BusinessRelationship]->(b:Business)
                         WHERE id(a) = {source_business_id} AND id(b) = {target_business_id}
-                        AND r.type = '{relationship_type}'
+                        {f"AND r.type = '{relationship_type}'" if relationship_type else ""}
                         RETURN r
                     $$) as (relationship agtype);
                 """)
@@ -301,7 +301,7 @@ class BusinessService:
                     logging.error(type(ex), ex)
                     return False    
     
-    async def _get_relationship_by_id(self, source_business_id: str, relationship_id: str) -> dict | None:
+    async def _get_relationship_by_id(self, relationship_id: str) -> dict | None:
         async with self._database_manager.get_connection() as conn:
             graph_name = self._graph_name
 
@@ -309,7 +309,7 @@ class BusinessService:
                 await cursor.execute(f"""
                     SELECT * from cypher('{graph_name}', $$
                         MATCH (a:Business)-[r:BusinessRelationship]->(b:Business)
-                        WHERE id(a) = {source_business_id} AND id(r) = {relationship_id}
+                        WHERE id(r) = {relationship_id}
                         RETURN r, a, b
                     $$) as (relationship agtype, source_business agtype, target_business agtype);
                 """)
@@ -322,15 +322,71 @@ class BusinessService:
                 return json.loads(result[0][0].split('::edge')[0])
                 
     @classmethod
-    async def delete_relationship(cls, business_id: str, relationship_id: str) -> DeleteRelationshipOutputDto | None:
+    async def delete_relationship(cls, relationship_id: str) -> DeleteRelationshipOutputDto | None:
         service = await cls()
-        business = await service._get_by_id(business_id)
-        if not business:
-            return None
-        
-        relationship = await service._get_relationship_by_id(business['id'], relationship_id)
+        relationship = await service._get_relationship_by_id(relationship_id)
         if not relationship:
             return None
 
-        result = await service._delete_relationship(relationship_id)
+        result = await service._delete_relationship(relationship['id'])
         return {"done": result}
+    
+    async def _get_indirect_relationship_shortest_path(self, source_business_id: str, target_business_id: str) -> dict | None:
+        async with self._database_manager.get_connection() as conn:
+            graph_name = self._graph_name
+
+            async with conn.cursor() as cursor:
+                # Full query example
+                # await cursor.execute(f"""
+                #     SELECT * from cypher('{graph_name}', $$
+                #         MATCH path = (a:Business)-[r:BusinessRelationship*1..10]-(b:Business)
+                #         WHERE id(a) = {source_business_id} AND id(b) = {target_business_id}
+                #         RETURN path, length(path) as path_length
+                #     $$) as (path agtype, path_length agtype)
+                #     ORDER BY path_length
+                #     LIMIT 1;
+                # """)
+
+                await cursor.execute(f"""
+                    SELECT * from cypher('{graph_name}', $$
+                        MATCH path = (a:Business)-[r:BusinessRelationship*1..10]-(b:Business)
+                        WHERE id(a) = {source_business_id} AND id(b) = {target_business_id}
+                        WITH path
+                        ORDER BY length(path)
+                        LIMIT 1
+                        UNWIND nodes(path) AS node
+                        RETURN collect(node.name) AS business_names, length(path) AS path_length
+                    $$) as (business_names agtype, path_length agtype);
+                """)
+
+                result = await cursor.fetchall()
+
+                if not result or len(result) == 0:
+                    return None
+
+                return {
+                    "distance_in_hops": int(result[0][1]),
+                    "business_names": json.loads(result[0][0])
+                }
+                
+    @classmethod
+    async def get_relationship(cls, source_business_id: str, target_business_id: str) -> GetRelationshipOutputDto | None:
+        service = await cls()
+        relationship = await service._get_relationship(source_business_id, target_business_id)
+        # We found a direct relationship
+        if relationship:
+            return {
+                "distance_in_hops": 1,
+                "relationship_type": relationship['properties']['type'],
+                "transaction_volume": relationship['properties']['transaction_volume']
+            }
+
+        indirect_relationship = await service._get_indirect_relationship_shortest_path(source_business_id, target_business_id)
+
+        if not indirect_relationship:
+            return None
+
+        return {
+            "distance_in_hops": indirect_relationship['distance_in_hops'],
+            "business_names": "->".join(indirect_relationship['business_names'])
+        }

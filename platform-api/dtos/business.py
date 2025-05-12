@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, validator
-from typing import List
+from typing import List, Optional
 
 class CreateBusinessInputDto(BaseModel):
     name: str
@@ -44,3 +44,10 @@ class GetRelationshipsOutputDto(BaseModel):
 
 class DeleteRelationshipOutputDto(BaseModel):
     done: bool
+
+class GetRelationshipOutputDto(BaseModel):
+    distance_in_hops: int
+    business_names: Optional[str] = None
+    relationship_type: Optional[str] = None
+    transaction_volume: Optional[int] = None
+
