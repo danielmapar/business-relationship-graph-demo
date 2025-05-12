@@ -1,6 +1,7 @@
 import asyncio
 import os
 from ..db.postgres.connection import DatabaseConnectionManager
+from ..dtos.business import CreateBusinessInputDto, CreateBusinessOutputDto
 
 class BusinessService:
     _instance = None
@@ -28,15 +29,15 @@ class BusinessService:
         cls._instance._database_manager = await DatabaseConnectionManager(cls._graph_name)
     
     @classmethod
-    async def create(cls):
+    async def create(cls, input: CreateBusinessInputDto) -> CreateBusinessOutputDto:
         service = await cls()
         async with service._database_manager.get_connection() as conn:
             graph_name = service._graph_name
             
             async with conn.cursor() as cursor:
                 try:
-                    # Create Person nodes
-                    await cursor.execute(f"SELECT * from cypher('{graph_name}', $$ CREATE (n:Person {{name: 'Joe', title: 'Developer'}}) $$) as (v agtype);")
+                    # Create Business nodes
+                    await cursor.execute(f"SELECT * from cypher('{graph_name}', $$ CREATE (n:Business {{name: '{input.name}', category: '{input.category}'}}) $$) as (v agtype);")
 
                     # When data inserted or updated, commit the transaction
                     await conn.commit()

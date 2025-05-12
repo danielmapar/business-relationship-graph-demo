@@ -1,3 +1,4 @@
 fastapi[standard]>=0.115.12
 psycopg
 psycopg-pool
+pydantic
