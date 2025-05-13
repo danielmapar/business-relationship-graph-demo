@@ -1,6 +1,10 @@
-# Local Development
+# Graph Service Demo
 
 This is the setup repository for a demo Business Relationship Graph service. It contains a `Vagrantfile` with the VM setup for executing the platform-api service and platform-frontend UI.
+
+The platform-api service is a simple API that allows you to create and query a business relationship graph. We are leveraging the [AGE](https://age.apache.org/) extension for PostgreSQL to store and query the graph. The platform-frontend is a simple UI that allows you to create and query the graph.
+
+## Local Development
 
 ### Getting Started with VirtualBox
 
@@ -28,7 +32,10 @@ This is the setup repository for a demo Business Relationship Graph service. It 
       * Username: `demo`
       * Password: `password`
         * Intefacing with the database: `docker exec -it c4a9673fe15f psql -d platform_api_db -U demo`
-
+    * Platform API: `localhost:8080`
+      * [Postman Collection](./platform-api/Demo.postman_collection.json)
+    * Platform Frontend: `localhost:3000`
+    
 ### Helpful commands
 
 * Turn off the VM: `vagrant halt`

@@ -2,13 +2,12 @@
 
 ## Setup
 
-
 ### To build the docker image
 ```bash
 docker build -t platform-api-loadtest .
 ```
 
-### To run the full process
+### To run the full process (business creation and relationship creation)
 ```bash
 docker run --network="host" \
   -v "$(pwd):/app" \
@@ -40,7 +39,7 @@ docker run --network="host" \
   platform-api-loadtest
 ```
 
-### Generate chain data (199 hops)
+### Generate chain data: 1 business with 199 hops to another business
 
 ```bash
 docker run --network="host" \
@@ -49,11 +48,11 @@ docker run --network="host" \
   platform-api-loadtest python generate_chain_data.py
 ```
 
-### Generate company with 100 relationships
+### Generate a business with 100 relationships
 
 ```bash
 docker run --network="host" \
   -v "$(pwd):/app" \
   -e API_HOST=localhost:8080 \
-  platform-api-loadtest python generate_company_with_100_relationships.py
+  platform-api-loadtest python generate_business_with_100_relationships.py
 ```
