@@ -4,7 +4,7 @@ services:
   platform-api:
     build:
       context: ./platform-api
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     volumes:
       - ./platform-api:/app
     ports:
@@ -15,7 +15,7 @@ services:
       - DATABASE_HOST=database
       - DATABASE_PORT=5432
       - DATABASE_NAME=platform_api_db
-      - DATABASE_USER=intuit
+      - DATABASE_USER=demo
       - DATABASE_PASSWORD=password
       - DATABASE_GRAPH=business_graph
     restart: always
@@ -30,7 +30,7 @@ services:
     # shm_size: 128mb
     environment:
       POSTGRES_DB: platform_api_db
-      POSTGRES_USER: intuit
+      POSTGRES_USER: demo
       POSTGRES_PASSWORD: password
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:

@@ -18,16 +18,16 @@ This is the setup repository for a demo Business Relationship Graph service. It 
 
 ### Running services locally
 
-* Navigate to `cd /home/vagrant/interview-intuit/local-dev`.
+* Navigate to `cd /home/vagrant/graph-demo/local-dev`.
 * Run `docker-compose build --no-cache` to build the `Dockerfile` associated with each service.
 * Run `docker-compose up -d` to run all services.
 * Run `docker-compose logs -f -t` to fetch service logs in real-time.
   * Run `docker-compose restart platform-api` to restart a service.
 * Services:
     * Database: `localhost:5432`
-      * Username: `intuit`
+      * Username: `demo`
       * Password: `password`
-        * Intefacing with the database: `docker exec -it c4a9673fe15f psql -d platform_api_db -U intuit`
+        * Intefacing with the database: `docker exec -it c4a9673fe15f psql -d platform_api_db -U demo`
 
 ### Helpful commands
 

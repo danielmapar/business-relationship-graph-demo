@@ -360,9 +360,11 @@ class BusinessService:
                 #     LIMIT 1;
                 # """)
 
+                
+                # From one to 1000000 hops
                 await cursor.execute(f"""
                     SELECT * from cypher('{graph_name}', $$
-                        MATCH path = (a:Business)-[r:BusinessRelationship*1..10]-(b:Business)
+                        MATCH path = (a:Business)-[r:BusinessRelationship*1..1000000]-(b:Business)
                         WHERE id(a) = {source_business_id} AND id(b) = {target_business_id}
                         WITH path
                         ORDER BY length(path)

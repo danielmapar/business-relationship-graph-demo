@@ -20,14 +20,14 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 
 	-- Create a Business node with properties (sample data)
 	SELECT * FROM cypher('business_graph', \$\$
-		CREATE (n:Business {name: 'Intuit', category: 'Financial Software'})
+		CREATE (n:Business {name: 'Demo', category: 'Financial Software'})
 		RETURN n
 	\$\$) as (node agtype);
 
 	-- Check data with a sample query
 	SELECT * FROM cypher('business_graph', \$\$
 		MATCH (n:Business) 
-		WHERE n.name = 'Intuit'
+		WHERE n.name = 'Demo'
 		RETURN n
 	\$\$) as (node agtype);
 
@@ -47,7 +47,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 	-- Test GIN index for full text search
 	SELECT *
 	FROM business_graph."Business"
-	WHERE to_tsvector('english', ag_catalog.agtype_access_operator(properties, '"name"'::ag_catalog.agtype)::text) @@ plainto_tsquery('Intuit')
+	WHERE to_tsvector('english', ag_catalog.agtype_access_operator(properties, '"name"'::ag_catalog.agtype)::text) @@ plainto_tsquery('Demo')
 	OR to_tsvector('english', ag_catalog.agtype_access_operator(properties, '"category"'::ag_catalog.agtype)::text) @@ plainto_tsquery('Financial');
 
 	-- Create trigram index for fuzzy matching

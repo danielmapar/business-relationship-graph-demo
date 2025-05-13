@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/jammy64"
 
   config.vm.provider :virtualbox do |vb|
-    vb.name = "intuit-interview"
+    vb.name = "graph-demo"
     #   # Display the VirtualBox GUI when booting the machine
     #   vb.gui = true
 
@@ -81,7 +81,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "..", "/home/vagrant/intuit-interview", disabled: false
+  config.vm.synced_folder "..", "/home/vagrant/graph-demo", disabled: false
 
   # Disable the default share of the current code directory. Doing this
   # provides improved isolation between the vagrant box and your host

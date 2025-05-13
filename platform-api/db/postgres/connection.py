@@ -25,7 +25,7 @@ class DatabaseConnectionManager:
     
     @classmethod
     def get_conn_string(self):
-        return f"host={os.getenv('DATABASE_HOST', 'database')} port={os.getenv('DATABASE_PORT', '5432')} dbname={os.getenv('DATABASE_NAME', 'platform_api_db')} user={os.getenv('DATABASE_USER', 'intuit')} password={os.getenv('DATABASE_PASSWORD', 'password')}"
+        return f"host={os.getenv('DATABASE_HOST', 'database')} port={os.getenv('DATABASE_PORT', '5432')} dbname={os.getenv('DATABASE_NAME', 'platform_api_db')} user={os.getenv('DATABASE_USER', 'demo')} password={os.getenv('DATABASE_PASSWORD', 'password')}"
 
     @classmethod
     async def _initialize_connection_pool(cls, graph_name):
