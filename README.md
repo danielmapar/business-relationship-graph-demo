@@ -1,6 +1,6 @@
 # Local Development
 
-This is the setup repository for the Intuit system design exercise. It contains a `Vagrantfile` with the VM setup for executing the platform-api service.
+This is the setup repository for a demo Business Relationship Graph service. It contains a `Vagrantfile` with the VM setup for executing the platform-api service and platform-frontend UI.
 
 ### Getting Started with VirtualBox
 
