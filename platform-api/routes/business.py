@@ -8,8 +8,9 @@ router = APIRouter(prefix="/businesses", tags=["businesses"])
 
 @router.get("")
 async def get(
-    name: str = Query(None, description="Filter businesses by name"),
-    category: str = Query(None, description="Filter businesses by category")
+    # FastAPI, using ... as the default value means the parameter is required. 
+    name: str = Query(..., description="Filter businesses by name"),
+    category: str = Query(..., description="Filter businesses by category")
 ) -> GetBusinessOutputDto | dict:
     result = await BusinessService.get_by_name_and_category(name=name, category=category)
     if not result:
