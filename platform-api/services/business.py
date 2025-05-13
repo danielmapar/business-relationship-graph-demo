@@ -344,15 +344,15 @@ class BusinessService:
         result = await service._delete_relationship(relationship['id'])
         return {"done": result}
     
-    async def _get_indirect_relationship_shortest_path(self, source_business_id: str, target_business_id: str) -> dict | None:
+    async def _get_indirect_relationship_shortest_path(self, source_business_id: str, target_business_id: str, based_on_max_transaction_volume: bool = False) -> dict | None:
         async with self._database_manager.get_connection() as conn:
             graph_name = self._graph_name
 
             async with conn.cursor() as cursor:
-                # Full query example
+                # 1) Find all paths from source to target
                 # await cursor.execute(f"""
                 #     SELECT * from cypher('{graph_name}', $$
-                #         MATCH path = (a:Business)-[r:BusinessRelationship*1..10]-(b:Business)
+                #         MATCH path = (a:Business)-[r:BusinessRelationship*1..1000000]-(b:Business)
                 #         WHERE id(a) = {source_business_id} AND id(b) = {target_business_id}
                 #         RETURN path, length(path) as path_length
                 #     $$) as (path agtype, path_length agtype)
@@ -360,19 +360,51 @@ class BusinessService:
                 #     LIMIT 1;
                 # """)
 
-                
-                # From one to 1000000 hops
-                await cursor.execute(f"""
-                    SELECT * from cypher('{graph_name}', $$
-                        MATCH path = (a:Business)-[r:BusinessRelationship*1..1000000]-(b:Business)
-                        WHERE id(a) = {source_business_id} AND id(b) = {target_business_id}
-                        WITH path
-                        ORDER BY length(path)
-                        LIMIT 1
-                        UNWIND nodes(path) AS node
-                        RETURN collect(node.name) AS business_names, length(path) AS path_length
-                    $$) as (business_names agtype, path_length agtype);
-                """)
+                # TODO: We should first try this indirect search with a max of 200 hops
+                # If we don't find a path, we should push this request to a background job queue (AWS SQS)
+                # The background job should try to find a path with a max of 1,000,000 hops
+                if based_on_max_transaction_volume:
+
+                    # 2) Find the path with maximum transaction volume from source to target
+                    # We are are considering transaction volume here (maximum transaction volume) between the source and target
+                    # So rather than finding the shortest path (fewest hops), it's finding the path 
+                    # with the maximum cumulative transaction volume between the source and target businesses, regardless of how many hops that path contains.
+                    # From 1 to 1,000,000 hops
+                    await cursor.execute(f"""
+                        SELECT * from cypher('{graph_name}', $$
+                            MATCH path = (a:Business)-[r:BusinessRelationship*1..1000000]-(b:Business)
+                            WHERE id(a) = {source_business_id} AND id(b) = {target_business_id}
+                            UNWIND relationships(path) AS rel
+                            WITH path, length(path) AS path_length, sum(rel.transaction_volume) AS total_weight
+                            WITH path, path_length, total_weight
+                            ORDER BY total_weight DESC
+                            LIMIT 1
+                            UNWIND nodes(path) AS node
+                            RETURN collect(node.name) AS business_names, path_length, total_weight AS transaction_volume
+                        $$) as (business_names agtype, path_length agtype, transaction_volume agtype);
+                    """)
+                else:
+                    # TODO: We should first try this indirect search with a max of 200 hops
+                    # If we don't find a path, we should push this request to a background job queue (AWS SQS)
+                    # The background job should try to find a path with a max of 1,000,000 hops
+
+                    # 3) Find the shortest path from source to target (e.g., Djikstra's algorithm)
+                    # This finds all paths between source and target businesses, orders them by path length (number of hops), 
+                    # and returns the shortest one which is effectively what Dijkstra's algorithm would do when all edge weights are equal.
+                    # We are not considering transaction volume here, the weight is 1 for all relationships
+                    # From 1 to 1,000,000 hops
+                    await cursor.execute(f"""
+                        SELECT * from cypher('{graph_name}', $$
+                            MATCH path = (a:Business)-[r:BusinessRelationship*1..1000000]-(b:Business)
+                            WHERE id(a) = {source_business_id} AND id(b) = {target_business_id}
+                            WITH path
+                            ORDER BY length(path)
+                            LIMIT 1
+                            UNWIND nodes(path) AS node
+                            RETURN collect(node.name) AS business_names, length(path) AS path_length
+                        $$) as (business_names agtype, path_length agtype);
+                    """)
+
 
                 result = await cursor.fetchall()
 
@@ -385,7 +417,7 @@ class BusinessService:
                 }
                 
     @classmethod
-    async def get_relationship(cls, source_business_id: str, target_business_id: str) -> GetRelationshipOutputDto | None:
+    async def get_relationship(cls, source_business_id: str, target_business_id: str, based_on_max_transaction_volume: bool = False) -> GetRelationshipOutputDto | None:
         service = await cls()
         relationship = await service._get_relationship(source_business_id, target_business_id)
         # We found a direct relationship
@@ -396,7 +428,7 @@ class BusinessService:
                 "transaction_volume": relationship['properties']['transaction_volume']
             }
 
-        indirect_relationship = await service._get_indirect_relationship_shortest_path(source_business_id, target_business_id)
+        indirect_relationship = await service._get_indirect_relationship_shortest_path(source_business_id, target_business_id, based_on_max_transaction_volume)
 
         if not indirect_relationship:
             return None

@@ -56,7 +56,9 @@ async def create_relationship(business_id: str, input: CreateRelationshipInputDt
     return CreateRelationshipOutputDto(**result)
 
 @router.get("/{business_id}/relationships")
-async def get_relationships(business_id: str) -> GetRelationshipsOutputDto | dict:
+async def get_relationships(
+    business_id: str
+) -> GetRelationshipsOutputDto | dict:
     result = await BusinessService.get_relationships(business_id)
     if not result:
         return Response(
@@ -67,8 +69,12 @@ async def get_relationships(business_id: str) -> GetRelationshipsOutputDto | dic
     return GetRelationshipsOutputDto(**result)
 
 @router.get("/{business_id}/relationships/{other_business_id}")
-async def get_relationship(business_id: str, other_business_id: str) -> GetRelationshipOutputDto | dict:
-    result = await BusinessService.get_relationship(business_id, other_business_id)
+async def get_relationship(
+    business_id: str, 
+    other_business_id: str, 
+    based_on_max_transaction_volume: bool = Query(False, alias="maxTransactionVolume", description="Filter relationships by transaction volume")
+) -> GetRelationshipOutputDto | dict:
+    result = await BusinessService.get_relationship(business_id, other_business_id, based_on_max_transaction_volume)
     if not result:
         return Response(
             content=json.dumps({"error": "Could not get relationship"}),
