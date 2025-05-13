@@ -1,10 +1,24 @@
 # routes/business.py
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Response, status, Query
 import json
 from ..services.business import BusinessService
 from ..dtos.business import CreateBusinessInputDto, CreateBusinessOutputDto, GetBusinessOutputDto, DeleteRelationshipOutputDto, CreateRelationshipInputDto, CreateRelationshipOutputDto, GetRelationshipsOutputDto, GetRelationshipOutputDto
 
 router = APIRouter(prefix="/businesses", tags=["businesses"])
+
+@router.get("")
+async def get(
+    name: str = Query(None, description="Filter businesses by name"),
+    category: str = Query(None, description="Filter businesses by category")
+) -> GetBusinessOutputDto | dict:
+    result = await BusinessService.get_by_name_and_category(name=name, category=category)
+    if not result:
+        return Response(
+            content=json.dumps({"error": "No businesses found"}),
+            media_type="application/json",
+            status_code=status.HTTP_404_NOT_FOUND
+        )
+    return result
 
 @router.post("")
 async def create(input: CreateBusinessInputDto) -> CreateBusinessOutputDto | dict:
@@ -45,7 +59,7 @@ async def get_relationships(business_id: str) -> GetRelationshipsOutputDto | dic
     result = await BusinessService.get_relationships(business_id)
     if not result:
         return Response(
-            content=json.dumps({"error": "Could not get relationships"}),
+            content=json.dumps({"error": "No relationships found"}),
             media_type="application/json",
             status_code=status.HTTP_400_BAD_REQUEST
         )

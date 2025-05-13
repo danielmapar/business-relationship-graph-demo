@@ -73,6 +73,14 @@ class BusinessService:
                 logging.error(type(ex), ex)
                 return None
 
+    @classmethod
+    async def get_by_name_and_category(cls, name: str, category: str) -> GetBusinessOutputDto | None:
+        service = await cls()
+        result = await service._get_by_name_and_category(name, category)
+        if not result:
+            return None
+
+        return result
 
     async def _get_by_name_and_category(self, name: str, category: str) -> dict | None:
 
@@ -98,9 +106,14 @@ class BusinessService:
 
                 if not result or len(result) == 0:
                     return None
+                
+                entity = json.loads(result[0][1])
 
-                # Get the string from the nested structure
-                return json.loads(result[0][0].split('::vertex')[0])
+                return {
+                    "id": str(result[0][0]),
+                    "name": entity["name"],
+                    "category": entity["category"]
+                }
     
     async def _create(self, name: str, category: str) -> dict | None:
         async with self._database_manager.get_connection() as conn:
@@ -131,10 +144,10 @@ class BusinessService:
             
             async with conn.cursor() as cursor:
                 # Check if the business already exists
-                business_id = await service._get_by_name_and_category(input.name, input.category)
+                business = await service._get_by_name_and_category(input.name, input.category)
 
-                if business_id:
-                    return {"id":str(business_id)}
+                if business:
+                    return {"id":str(business["id"])}
                 
                 # Create the business if it doesn't exist
                 data = await service._create(input.name, input.category)
