@@ -50,6 +50,12 @@ Vagrant.configure("2") do |config|
       host:  8080,
       auto_correct: true
 
+  # Platform Frontend
+  config.vm.network "forwarded_port",
+      guest: 3000,
+      host:  3000,
+      auto_correct: true
+
   # Platform RESTful API - Debugger
   config.vm.network "forwarded_port",
       guest: 5005,

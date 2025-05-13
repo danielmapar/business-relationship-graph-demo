@@ -4,7 +4,7 @@ services:
   platform-api:
     build:
       context: ./platform-api
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     volumes:
       - ./platform-api:/app
     ports:
@@ -38,6 +38,26 @@ services:
     volumes:
       - database-data:/var/lib/postgresql/data
       - ./scripts/database/init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
+
+  platform-frontend:
+    container_name: platform-frontend
+    build:
+      context: ./platform-frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./platform-frontend/src:/app/src
+      - ./platform-frontend/public:/app/public
+      - ./platform-frontend/index.html:/app/index.html
+      - ./platform-frontend/.eslintrc.cjs:/app/.eslintrc.cjs
+      - ./platform-frontend/package.json:/app/package.json
+      - ./platform-frontend/package-lock.json:/app/package-lock.json
+      - ./platform-frontend/tsconfig.json:/app/tsconfig.json
+      - ./platform-frontend/tsconfig.node.json:/app/tsconfig.node.json
+      - ./platform-frontend/vite.config.ts:/app/vite.config.ts
+      - ./platform-frontend/.env.localdev:/app/.env.localdev
+    ports:
+      - "3000:3000"
+
 
 volumes:
   database-data:
